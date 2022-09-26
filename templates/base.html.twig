@@ -15,9 +15,7 @@
         {% endblock %}
     </head>
     <body>
-{#        <nav class="bg-primary text-white">#}
-{#            <p>Ceci est une barre de navigation</p>#}
-{#        </nav>#}
+        {{ include('partials/_nav_bar.html.twig') }}
         <div class="container">
             {% block body %}{% endblock %}
         </div>
