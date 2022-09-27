@@ -3,8 +3,9 @@
 {% block title %}Détail article{% endblock %}
 
 {% block body %}
-    <div class="h2 pb-2 text-primary border-bottom border-dark">
+    <div class="h2 pb-2 text-primary border-bottom border-dark d-flex justify-content-between">
         {{ article.titre }}
+        <a href="#" class="badge text-bg-secondary text-decoration-none">{{ article.categorie.titre }}</a>
     </div>
     <span class="badge rounded-pill text-bg-info mb-3">{{ article.createdAt.format('d/m/Y') }}</span>
     <div class="border border-secondary p-2 mb-2 rounded-4">{{ article.contenu }}</div>
