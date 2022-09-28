@@ -34,6 +34,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                     ->setCreatedAt($faker->dateTimeBetween('-6 months'))
                     ->setSlug($this->slugger->slug($article->getTitre())->lower())
                     ->setCategorie($this->getReference("categorie".$faker->numberBetween(0,8)));
+            $this->addReference("article".$i, $article);
             $manager->persist($article); // ordre INSERT
         }
 

@@ -10,11 +10,26 @@ class Article {
 }
 
 class Categorie {
-    -id : int
+    - id : int
     - titre : string
     - slug : string
 }
 
+class Commentaire {
+    - id : int
+    - contenu : text
+    - createdAt : datetime
+}
+
+class Auteur {
+    - id : int
+    - prenom : string
+    - nom : string
+    - pseudo : string
+}
+
 Article "0..*" -- "0..1" Categorie
+Commentaire "1..*" -- "0..1" Auteur
+Commentaire "0..*" -- "1..1" Article
 
 @enduml
