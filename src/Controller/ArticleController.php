@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ArticleController extends AbstractController
 {
@@ -43,7 +46,8 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/article/{slug}', name: 'app_article_slug')]
+
+    #[Route('/articles/{slug}', name: 'app_articles_slug')]
     public function detail($slug): Response
     {
         //dd( $this->articleRepository->findBy(['slug' => $slug]));
@@ -52,4 +56,26 @@ class ArticleController extends AbstractController
         ]);
     }
 
+    #[Route('/articles/nouveau', name: 'app_articles_nouveau', priority: 1)]
+    public function insert(SluggerInterface $slugger) : Response
+    {
+        $article = new Article();
+        // création du form
+        $formArticle = $this->createForm(ArticleType::class, $article);
+        // appel de la vue 'twig' permettant d'afficher le form
+        return $this->renderForm('article/nouveau.html.twig', [
+            'formArticle' => $formArticle,
+        ]);
+
+
+
+
+
+//        $article->setTitre("Nouvel article")
+//                ->setContenu("Contenu de nouvel article")
+//                ->setSlug($slugger->slug($article->getTitre())->lower())
+//                ->setCreatedAt(new \DateTime());
+//        $this->articleRepository->add($article, true);
+//        return $this->redirectToRoute('app_articles');
+    }
 }

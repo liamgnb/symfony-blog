@@ -11,7 +11,7 @@
             Articles les plus récents :
         </div>
         {% for article in articles %}
-            <a href="{{ path("app_article_slug", {slug: article.slug}) }}" class="list-group-item list-group-item-action">
+            <a href="{{ path("app_articles_slug", {slug: article.slug}) }}" class="list-group-item list-group-item-action">
                 <div class="d-flex justify-content-between align-items-center">
                     {{ article.titre }}
                     <span class="badge rounded-pill text-bg-info">{{ article.createdAt.format('d/m/Y') }}</span>
