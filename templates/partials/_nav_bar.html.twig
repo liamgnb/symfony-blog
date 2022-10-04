@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_accueil') }}">LG Blog</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_accueil') }}">LRR Blog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_accueil') }}">Accueil</a>
@@ -17,6 +17,16 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_categories') }}">Catégories</a>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Administrateur
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('app_articles_nouveau') }}">Ajouter un article</a></li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
         </div>

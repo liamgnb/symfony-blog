@@ -7,6 +7,8 @@
         {{ article.titre }}
         {% if article.categorie is not null %}
             <a href="{{ path('app_categorie_slug', {'slug': article.categorie.slug}) }}" class="badge text-bg-secondary text-decoration-none">{{ article.categorie.titre }}</a>
+        {% else %}
+            <span class="badge text-bg-secondary text-decoration-none"> Sans catégorie</span>
         {% endif %}
     </div>
     <span class="badge rounded-pill text-bg-info mb-3">{{ article.createdAt.format('d/m/Y') }}</span>

@@ -56,26 +56,26 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/articles/nouveau', name: 'app_articles_nouveau', priority: 1)]
-    public function insert(SluggerInterface $slugger) : Response
+    #[Route('/articles/nouveau', name: 'app_articles_nouveau', methods: ['GET', 'POST'], priority: 1)]
+    public function insert(SluggerInterface $slugger, Request $request) : Response
     {
         $article = new Article();
         // création du form
         $formArticle = $this->createForm(ArticleType::class, $article);
+
+        // reconnait si le form à été soumis
+        $formArticle->handleRequest($request);
+        if($formArticle->isSubmitted() && $formArticle->isValid()){
+            $article->setSlug($slugger->slug($article->getTitre())->lower())
+                    ->setCreatedAt(new \DateTime());
+            $this->articleRepository->add($article, true);
+            return $this->redirectToRoute('app_articles');
+        }
+
+
         // appel de la vue 'twig' permettant d'afficher le form
         return $this->renderForm('article/nouveau.html.twig', [
             'formArticle' => $formArticle,
         ]);
-
-
-
-
-
-//        $article->setTitre("Nouvel article")
-//                ->setContenu("Contenu de nouvel article")
-//                ->setSlug($slugger->slug($article->getTitre())->lower())
-//                ->setCreatedAt(new \DateTime());
-//        $this->articleRepository->add($article, true);
-//        return $this->redirectToRoute('app_articles');
     }
 }
