@@ -8,7 +8,7 @@
 
         {# Affichage du libelle de la catégorie si l'article en possède une. (En lien, pour afficher tout les articles de cette catégorie.) #}
         {% if article.categorie is not null %}
-            <a href="{{ path('app_categorie_slug', {'slug': article.categorie.slug}) }}" class="badge text-bg-secondary text-decoration-none">{{ article.categorie.titre }}</a>
+            <a href="{{ path('app_categories_slug', {'slug': article.categorie.slug}) }}" class="badge text-bg-secondary text-decoration-none">{{ article.categorie.titre }}</a>
         {% else %}
             <span class="badge text-bg-secondary text-decoration-none"> Sans catégorie</span>
         {% endif %}

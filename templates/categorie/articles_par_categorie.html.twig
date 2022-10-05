@@ -7,15 +7,15 @@
         Catégorie {{ categorie.titre }}
     </div>
     <span class="blockquote-footer">
-        {% if categorie.articles | length > 1 %}
-            {{ categorie.articles | length }} articles
+        {% if articles | length > 1 %}
+            {{ articles | length }} articles
         {% else %}
-            {{ categorie.articles | length }} article
+            {{ articles | length }} article
         {% endif %}
     </span>
 
     <div class="accordion mt-3 mb-5" id="accordionArticles">
-        {% for article in categorie.articles %}
+        {% for article in articles %}
         <div class="accordion-item">
             <h2 class="accordion-header" id="article{{ article.id }}">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ article.id }}" aria-expanded="false" aria-controls="collapse{{ article.id }}">

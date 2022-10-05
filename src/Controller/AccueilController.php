@@ -23,7 +23,7 @@ class AccueilController extends AbstractController
     public function index(): Response
     {
         return $this->render('accueil/index.html.twig', [
-            'articles' => $this->articleRepository->findBy([], ['createdAt' => 'DESC'], 10),
+            'articles' => $this->articleRepository->findBy(['estPublie' => 'true'], ['createdAt' => 'DESC'], 10),
         ]);
     }
 }
