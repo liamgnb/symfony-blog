@@ -16,4 +16,17 @@
     <span class="badge rounded-pill text-bg-info mb-3">{{ article.createdAt.format('d/m/Y') }}</span> {# Date de création #}
     <div class="border border-secondary p-2 mb-2 rounded-4">{{ article.contenu | raw }}</div>
     {{ include('partials/_commentaires.html.twig') }}
+    <div class="row justify-content-md-center mt-4">
+        <div class="col col-lg-6 border border-info rounded-3 p-3">
+            <legend>Ajouter un commentaire</legend>
+            {{ form_start(formCommentaire) }}
+            {{ form_row(formCommentaire.auteur)}}
+            {{ form_row(formCommentaire.contenu)}}
+            {{ form_widget(formCommentaire.article, {'value': article.id}) }}
+            <div class="d-flex justify-content-center">
+                <input type="submit" class="btn btn-outline-success" value="Ajouter">
+            </div>
+            {{ form_end(formCommentaire) }}
+        </div>
+    </div>
 {% endblock %}

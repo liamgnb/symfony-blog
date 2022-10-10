@@ -21,11 +21,11 @@ class Commentaire
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
-    private ?Auteur $auteur = null;
-
-    #[ORM\ManyToOne(inversedBy: 'commentaires')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Article $article = null;
+
+    #[ORM\ManyToOne(inversedBy: 'commentaires')]
+    private ?Auteur $auteur = null;
 
     public function getId(): ?int
     {
@@ -43,19 +43,7 @@ class Commentaire
 
         return $this;
     }
-
-
-    public function getAuteur(): ?Auteur
-    {
-        return $this->auteur;
-    }
-
-    public function setAuteur(?Auteur $auteur): self
-    {
-        $this->auteur = $auteur;
-
-        return $this;
-    }
+    
 
     public function getArticle(): ?Article
     {
@@ -77,6 +65,18 @@ class Commentaire
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getAuteur(): ?Auteur
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(?Auteur $auteur): self
+    {
+        $this->auteur = $auteur;
 
         return $this;
     }
