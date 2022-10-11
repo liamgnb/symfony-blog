@@ -48,7 +48,7 @@ class ArticleController extends AbstractController
 
         // Mise en place de la pagination
         $articles = $paginator->paginate(
-            $this->articleRepository->findBy([], ['createdAt' => 'DESC']),
+            $this->articleRepository->findBy(["estPublie" => true], ['createdAt' => 'DESC']),
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );
@@ -134,7 +134,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/articles/modification/{slug}', name: 'app_articles_edit', methods: ['GET', 'POST'])]
-    public function update($slug, Request $request) : Response
+    public function update($slug,SluggerInterface $slugger, Request $request) : Response
     {
         $article = $this->articleRepository->findOneBy(['slug' => $slug]);
 
@@ -149,6 +149,7 @@ class ArticleController extends AbstractController
         // reconnait si le form à été soumis
         $formArticle->handleRequest($request);
         if($formArticle->isSubmitted() && $formArticle->isValid()){
+            $article->setSlug($slugger->slug($article->getTitre())->lower());
             $this->articleRepository->add($article, true);
             return $this->redirectToRoute('app_articles_slug', ['slug' => $slug]);
         }
