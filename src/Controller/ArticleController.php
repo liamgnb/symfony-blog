@@ -59,7 +59,7 @@ class ArticleController extends AbstractController
     }
 
 
-    #[Route('/articles/{slug}', name: 'app_articles_slug')]
+    #[Route('/articles/{slug}', name: 'app_articles_slug', methods: ['GET', 'POST'])]
     public function detail($slug, Request $request): Response
     {
         $commentaire = new Commentaire();
@@ -123,6 +123,32 @@ class ArticleController extends AbstractController
 
         // appel de la vue 'twig' permettant d'afficher le form
         return $this->renderForm('article/nouveau.html.twig', [
+            'formArticle' => $formArticle,
+        ]);
+    }
+
+    #[Route('/articles/modification/{slug}', name: 'app_articles_edit', methods: ['GET', 'POST'])]
+    public function update($slug, Request $request) : Response
+    {
+        $article = $this->articleRepository->findOneBy(['slug' => $slug]);
+
+        // vérificationa article
+        if (!$article) {
+            return $this->redirectToRoute('app_articles');
+        }
+
+        // création du form
+        $formArticle = $this->createForm(ArticleType::class, $article);
+
+        // reconnait si le form à été soumis
+        $formArticle->handleRequest($request);
+        if($formArticle->isSubmitted() && $formArticle->isValid()){
+            $this->articleRepository->add($article, true);
+            return $this->redirectToRoute('app_articles_slug', ['slug' => $slug]);
+        }
+
+        // appel de la vue 'twig' permettant d'afficher le form
+        return $this->renderForm('article/edit.html.twig', [
             'formArticle' => $formArticle,
         ]);
     }
