@@ -2,8 +2,10 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\AccueilController;
 use App\Entity\Article;
 use App\Entity\Categorie;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -30,8 +32,10 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Accueil', 'fas fa-home-lg-alt');
-        yield MenuItem::subMenu('Article', 'fas fa-filter')->setSubItems([
+        yield MenuItem::linkToUrl('Retour au blog', 'fa fa-backward', $this->generateUrl('app_accueil'));
+        yield MenuItem::section();
+
+        yield MenuItem::subMenu('Article', 'fa fa-bars')->setSubItems([
             MenuItem::linkToCrud('Liste', 'fas fa-list', Article::class)
                 ->setAction(Crud::PAGE_INDEX)
                 ->setDefaultSort(['createdAt' => 'DESC']),
@@ -39,11 +43,14 @@ class DashboardController extends AbstractDashboardController
                 ->setAction(Crud::PAGE_NEW),
         ]);
 
-        yield MenuItem::subMenu('Catégories', 'fas fa-filter')->setSubItems([
+        yield MenuItem::subMenu('Catégories', 'fa fa-bars')->setSubItems([
             MenuItem::linkToCrud('Liste', 'fas fa-list', Categorie::class)
                 ->setAction(Crud::PAGE_INDEX),
             MenuItem::linkToCrud('Ajouter', 'fas-solid fa-plus', Categorie::class)
                 ->setAction(Crud::PAGE_NEW),
         ]);
     }
+
+
+
 }

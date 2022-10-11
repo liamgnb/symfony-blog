@@ -5,6 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -51,5 +54,36 @@ class CategorieCrudController extends AbstractCrudController
         parent::persistEntity($entityManager, $entityInstance);
 
     }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        $crud->setPageTitle(Crud::PAGE_INDEX, 'Liste des catégories');
+        $crud->setPageTitle(Crud::PAGE_NEW, 'Ajouter une catégorie');
+        $crud->setPageTitle(Crud::PAGE_DETAIL, 'Detail');
+        $crud->setPageTitle(Crud::PAGE_EDIT, 'Modification');
+        $crud->setPaginatorPageSize(10);
+        return $crud;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions->update(Crud::PAGE_INDEX, Action::NEW,
+            function (Action $action) {
+                $action->setLabel('Ajouter une catégorie');
+                $action->setIcon('fas-solid fa-plus');
+                return $action;
+            }
+        );
+        $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN,
+            function (Action $action) {
+                $action->setLabel('Ajouter');
+                $action->setIcon('fa fa-check');
+                return $action;
+            }
+        );
+        $actions->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER);
+        return $actions;
+    }
+
 
 }

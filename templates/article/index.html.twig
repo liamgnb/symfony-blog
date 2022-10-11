@@ -6,6 +6,9 @@
     <div class="h2 pb-2 text-primary border-bottom border-dark">
         Liste des articles
     </div>
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-outline-secondary" href="{{ path('app_articles_nouveau') }}">Ajouter un article</a>
+    </div>
     <div class="list-group mb-3">
         {% for article in articles %}
             <a href="{{ path("app_articles_slug", {slug: article.slug}) }}" class="list-group-item list-group-item-action">
