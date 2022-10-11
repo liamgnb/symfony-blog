@@ -97,9 +97,15 @@ class ArticleController extends AbstractController
             return $this->redirectToRoute('app_articles_slug', ['slug' => $slug]);
         }
 
+        // si article n'est pas publié quitter la page
+        $article = $this->articleRepository->findOneBy(['slug' => $slug]);
+        if (!$article->isEstPublie()) {
+            return $this->redirectToRoute('app_articles');
+        }
+
         //dd( $this->articleRepository->findBy(['slug' => $slug]));
         return $this->renderForm('article/detail.html.twig', [
-            'article' => $this->articleRepository->findOneBy(['slug' => $slug]),
+            'article' => $article,
             'formCommentaire' => $formCommentaire,
         ]);
     }
