@@ -23,7 +23,7 @@
                                     {% endif %}
                                     <small class="text-muted">{{ commentaire.createdAt.format('d/m/Y') }}</small>
                                 </div>
-                                <p class="mb-1">{{ commentaire.contenu }}</p>
+                                <p class="mb-1">{{ commentaire.contenu | raw }}</p>
                             </div>
                         {% endfor %}
                     </div>
