@@ -81,4 +81,14 @@ class Commentaire
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return  implode(" -- ",
+            [($this->auteur) ? $this->auteur->getPseudo() : 'Anonyme',
+            $this->createdAt->format("d/m/y"),
+            $this->contenu,]
+        );
+    }
+
+
 }

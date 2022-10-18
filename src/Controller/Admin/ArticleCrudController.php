@@ -3,19 +3,22 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Article;
+use App\Form\CommentaireType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ArticleCrudController extends AbstractCrudController
@@ -45,7 +48,7 @@ class ArticleCrudController extends AbstractCrudController
             TextEditorField::new('contenu')
                 ->hideOnIndex()
                 ->setSortable(false),
-            AssociationField::new('categorie', )
+            AssociationField::new('categorie')
                 ->setRequired(false),
             DateTimeField::new('createdAt', 'Date de création')
                 ->hideOnForm(),
@@ -54,6 +57,8 @@ class ArticleCrudController extends AbstractCrudController
                 ->hideOnDetail()
                 ->hideOnIndex(),
             BooleanField::new('estPublie', 'Publié'),
+            ArrayField::new('commentaires')->onlyOnDetail(),
+            CollectionField::new('commentaires')->onlyOnForms()->setEntryType(CommentaireType::class),
         ];
     }
 

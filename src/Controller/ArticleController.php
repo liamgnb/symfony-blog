@@ -10,6 +10,7 @@ use App\Form\CommentaireType;
 use App\Repository\ArticleRepository;
 use App\Repository\AuteurRepository;
 use App\Repository\CommentaireRepository;
+use App\Service\CommentaireService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -60,41 +61,25 @@ class ArticleController extends AbstractController
 
 
     #[Route('/articles/{slug}', name: 'app_articles_slug', methods: ['GET', 'POST'])]
-    public function detail($slug, Request $request): Response
+    public function detail($slug, Request $request, CommentaireService $commentaireService): Response
     {
         $commentaire = new Commentaire();
         $formCommentaire = $this->createForm(CommentaireType::class, $commentaire);
 
         $formCommentaire->handleRequest($request);
-        if($formCommentaire->isSubmitted() && $formCommentaire->isValid()){
-            // vérrification du nom si pseudo saisie
-            if(!$formCommentaire->get('auteur')->get('pseudo')->isEmpty() && $formCommentaire->get('auteur')->get('nom')->isEmpty()){
-                $formCommentaire->get('auteur')->get('nom')->addError(new FormError('Veuillez saisir le nom'));
-                return $this->renderForm('article/detail.html.twig', [
-                    'article' => $this->articleRepository->findOneBy(['slug' => $slug]),
-                    'formCommentaire' => $formCommentaire,
-                ]);
-            }
-            // vérification du prénim si pseudo saisie
-            if(!$formCommentaire->get('auteur')->get('pseudo')->isEmpty() && $formCommentaire->get('auteur')->get('prenom')->isEmpty()){
-                $formCommentaire->get('auteur')->get('prenom')->addError(new FormError('Veuillez saisir le prénom'));
-                return $this->renderForm('article/detail.html.twig', [
-                    'article' => $this->articleRepository->findOneBy(['slug' => $slug]),
-                    'formCommentaire' => $formCommentaire,
-                ]);
-            }
 
-            // Ajout de l'auteur si il n'est pas présent dans la table.
-            if($commentaire->getAuteur()->getPseudo() && !$this->auteurRepository->findOneBy(['pseudo' => $commentaire->getAuteur()->getPseudo()])){
-                $this->auteurRepository->add($commentaire->getAuteur(), true);
-            } elseif (!$commentaire->getAuteur()->getPseudo()){
-                $commentaire->setAuteur(null);
-            } else {
-                $commentaire->setAuteur($this->auteurRepository->findOneBy(['pseudo' => $commentaire->getAuteur()->getPseudo()]));
+        if($formCommentaire->isSubmitted() && $formCommentaire->isValid()){
+            // gestion des erreus du formulaire de création de mail
+            switch ($commentaireService->addCommentaire($commentaire, $formCommentaire)) {
+                case 1 :
+                    return $this->renderForm('article/detail.html.twig', [
+                        'article' => $this->articleRepository->findOneBy(['slug' => $slug]),
+                        'formCommentaire' => $formCommentaire,
+                    ]);
+
+                case 2 :
+                    return $this->redirectToRoute('app_articles_slug', ['slug' => $slug]);
             }
-            $commentaire->setCreatedAt(new \DateTime());
-            $this->commentaireRepository->add($commentaire, true);
-            return $this->redirectToRoute('app_articles_slug', ['slug' => $slug]);
         }
 
         // si article n'est pas publié quitter la page
@@ -151,7 +136,7 @@ class ArticleController extends AbstractController
         if($formArticle->isSubmitted() && $formArticle->isValid()){
             $article->setSlug($slugger->slug($article->getTitre())->lower());
             $this->articleRepository->add($article, true);
-            return $this->redirectToRoute('app_articles_slug', ['slug' => $slug]);
+            return $this->redirectToRoute('app_articles_slug', ['slug' => $article->getSlug()]);
         }
 
         // appel de la vue 'twig' permettant d'afficher le form

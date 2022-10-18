@@ -21,7 +21,9 @@ class CommentaireType extends AbstractType
     {
         $builder
             ->add('auteur', AuteurType::class)
-            ->add('contenu', CKEditorType::class)
+            ->add('contenu', CKEditorType::class,[
+                'required' => true,
+            ])
             ->add('article', EntityType::class, [
                 'attr' => ['class' => 'visually-hidden'],
                 'class' => Article::class,
