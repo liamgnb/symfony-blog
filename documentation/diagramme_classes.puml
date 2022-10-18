@@ -29,6 +29,16 @@ class Auteur {
     - pseudo : string
 }
 
+class Contact {
+    - id : int
+    - nom : string
+    - prenom : string
+    - email : string
+    - createdAt : datetime
+    - sujet : string
+    - contenu : text
+}
+
 Article "0..*" -- "0..1" Categorie
 Commentaire "1..*" -- "0..1" Auteur
 Commentaire "0..*" -- "1..1" Article

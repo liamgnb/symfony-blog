@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-8">
+            <div class="h2 pb-2 text-primary border-bottom border-dark mb-3">
+                Envoyer un message
+            </div>
+            {{ form_start(formContact) }}
+                {{ form_row(formContact.prenom) }}
+                {{ form_row(formContact.nom) }}
+                {{ form_row(formContact.email) }}
+                {{ form_row(formContact.sujet) }}
+                {{ form_row(formContact.contenu) }}
+                <div class="d-flex justify-content-end">
+                    <input type="reset" class="btn btn-outline-danger me-3" value="Effacer">
+                    <input type="submit" class="btn btn-outline-success" value="Envoyer">
+                </div>
+            {{ form_end(formContact) }}
+        </div>
+    </div>
+{% endblock %}
