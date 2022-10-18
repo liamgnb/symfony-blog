@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Form\ContactType;
 use App\Repository\ContactRepository;
+use App\Service\EmailService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ class ContactController extends AbstractController
     }
 
     #[Route('/contact', name: 'app_contact')]
-    public function index(Request $request): Response
+    public function index(Request $request, EmailService $emailService): Response
     {
         $contact = new Contact();
         $formContact = $this->createForm(ContactType::class, $contact);
@@ -33,6 +34,16 @@ class ContactController extends AbstractController
         if($formContact->isSubmitted() && $formContact->isValid()){
             $contact->setCreatedAt(new \DateTime());
             $this->contactRepository->add($contact, true);
+            $emailService->sendEmail(
+                $contact->getEmail(),
+                'admin@lrr.fr',
+                $contact->getSujet(),
+                'email/model_2.html.twig',
+                [
+                    'contenu' => $contact->getContenu(),
+                    'nom' => $contact->getNom(),
+                    'prenom' => $contact->getPrenom(),
+            ]);
             return $this->redirectToRoute('app_accueil');
         }
 
