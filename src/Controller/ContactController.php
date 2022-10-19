@@ -23,7 +23,7 @@ class ContactController extends AbstractController
         $this->contactRepository = $contactRepository;
     }
 
-    #[Route('/contact', name: 'app_contact')]
+    #[Route('/contact', name: 'app_contact', methods: ['GET', 'POST'])]
     public function index(Request $request, EmailService $emailService): Response
     {
         $contact = new Contact();

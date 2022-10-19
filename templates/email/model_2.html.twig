@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    {{ contenu }}
+    {{ contenu | raw }}
     <p>De : {{ nom|upper }} {{ prenom|capitalize }}</p>
 </body>
 </html>
