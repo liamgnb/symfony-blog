@@ -24,7 +24,7 @@
             {{ form_start(formCommentaire) }}
             {{ form_row(formCommentaire.auteur)}}
             {{ form_row(formCommentaire.contenu)}}
-            {{ form_widget(formCommentaire.article, {'value': article.id}) }}
+            {{ form_widget(formCommentaire.article, {'value': article.id, 'attr' : {'class' : 'visually-hidden'}}) }}
             <div class="d-flex justify-content-center">
                 <input type="submit" class="btn btn-outline-success" value="Ajouter">
             </div>
